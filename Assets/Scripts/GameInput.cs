@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class GameInput : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Vector2 GetMovementVectorNormalized() {
+        float horizontalAxis = Input.GetAxisRaw("Horizontal");
+        float verticalAxis = Input.GetAxisRaw("Vertical");
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Vector2 inputVector = new Vector2(horizontalAxis, verticalAxis);
+        inputVector = inputVector.normalized;
+
+        return inputVector;
     }
 }
