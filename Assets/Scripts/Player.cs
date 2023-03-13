@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour {   
 
@@ -10,28 +9,27 @@ public class Player : MonoBehaviour {
 
     private void Awake() {
         if (Instance != null) {
-            Instance = this;
-        } else {
-            Debug.LogError("There's more than one player");
+           Debug.LogError("There's more than one player");
         }
+        Instance = this;
     }
-
-
 
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private GameInput gameInput;
     [SerializeField] private LayerMask countersLayerMask;
 
     private Vector3 lastInteractDirection;
+    
     private ClearCounter selectedCounter;
 
     private CharacterController characterController;
 
-    public event EventHandler<SelectedCounterChangedEventArgs> SelectedCounterChanged;
     public class SelectedCounterChangedEventArgs : EventArgs {
         public ClearCounter selectedCounter;
     }
 
+    public event EventHandler<SelectedCounterChangedEventArgs> SelectedCounterChanged;
+    
     protected virtual void OnSelectedCounterChanged(SelectedCounterChangedEventArgs e) {
         SelectedCounterChanged?.Invoke(this, e);
     }
@@ -58,6 +56,16 @@ public class Player : MonoBehaviour {
         return isWalking;
     }
 
+    private ClearCounter SelectedCounter {
+        get { return selectedCounter; }
+        set {
+            if (selectedCounter != value) {
+                selectedCounter = value;
+                OnSelectedCounterChanged(new SelectedCounterChangedEventArgs { selectedCounter = value });
+            }
+        }
+    }
+
     private void HandleInteractions() {
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
 
@@ -71,7 +79,7 @@ public class Player : MonoBehaviour {
         //Comprobar si estamos delante de un Counter (a la interactDistance de el)
         float interactDistance = 2f;
 
-        //Solo probamos si el rayo choca contra objectos que esten en la capa de los Counters
+        //Solo probamos si el rayo choca contra colliders cuyos objectos esten en la capa de los Counters
         if(Physics.Raycast(transform.position, lastInteractDirection, 
             out RaycastHit hitInfo, interactDistance, countersLayerMask)) {
             //Si hemos tocado un objecto con el componente ClearCounter
@@ -80,15 +88,19 @@ public class Player : MonoBehaviour {
                 //clearCounter.Interact();
                 if(clearCounter != selectedCounter) {
                     SelectedCounter = clearCounter;             
-                }
+                } //Si es el mismo no hacemos nada
+            // Si no hemos tocado con el raycast un ClearCounter
             } else {
-                selectedCounter = null;
+                SelectedCounter = null;
             }
+        //Si no hemos tocado nada con el raycast
         } else {
-            selectedCounter = null;
+            SelectedCounter = null;
         }
 
     }
+
+
 
     private void HandleMovement() {
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
@@ -118,14 +130,6 @@ public class Player : MonoBehaviour {
         isWalking = moveDirection != Vector3.zero;
     }
 
-    private ClearCounter SelectedCounter { 
-        get { return selectedCounter; }
-        set {
-            if (selectedCounter != value) {
-                selectedCounter = value;
-                OnSelectedCounterChanged(new SelectedCounterChangedEventArgs {selectedCounter = value });
-            }
-        }
-    }
+   
 
 }
