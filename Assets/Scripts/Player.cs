@@ -21,12 +21,12 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
 
     private Vector3 lastInteractDirection;
     
-    private ClearCounter selectedCounter;
+    
 
     private CharacterController characterController;
 
     public class SelectedCounterChangedEventArgs : EventArgs {
-        public ClearCounter selectedCounter;
+        public BaseCounter selectedCounter;
     }
 
     public event EventHandler<SelectedCounterChangedEventArgs> SelectedCounterChanged;
@@ -57,7 +57,9 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
         return isWalking;
     }
 
-    private ClearCounter SelectedCounter {
+    private BaseCounter selectedCounter;
+
+    private BaseCounter SelectedCounter {
         get { return selectedCounter; }
         set {
             if (selectedCounter != value) {
@@ -66,7 +68,6 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
             }
         }
     }
-
     
 
     private void HandleInteractions() {
@@ -86,11 +87,11 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
         if(Physics.Raycast(transform.position, lastInteractDirection, 
             out RaycastHit hitInfo, interactDistance, countersLayerMask)) {
             //Si hemos tocado un objecto con el componente ClearCounter
-            if(hitInfo.transform.TryGetComponent(out ClearCounter clearCounter)) {
+            if(hitInfo.transform.TryGetComponent(out BaseCounter baseCounter)) {
                 //Object hited has ClearCounter
                 //clearCounter.Interact();
-                if(clearCounter != selectedCounter) {
-                    SelectedCounter = clearCounter;             
+                if(baseCounter != selectedCounter) {
+                    SelectedCounter = baseCounter;             
                 } //Si es el mismo no hacemos nada
             // Si no hemos tocado con el raycast un ClearCounter
             } else {

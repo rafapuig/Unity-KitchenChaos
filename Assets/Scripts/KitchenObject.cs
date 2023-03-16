@@ -22,9 +22,10 @@ public class KitchenObject : MonoBehaviour
                 Debug.LogError("Counter already has a KitchenObject!");
             }
 
+            //Asignarle al contenedor del objeto que contiene dicho objeto
             kitchenObjectParent.KitchenObject = this;
 
-            //Actulizar visualmente
+            //Actualizar visualmente
             transform.parent = kitchenObjectParent.GetKitchenObjectFollowTransform();
             transform.localPosition = Vector3.zero;
         } 
