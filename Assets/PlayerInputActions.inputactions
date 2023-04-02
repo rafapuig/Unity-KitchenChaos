@@ -169,7 +169,7 @@
                 {
                     "name": "",
                     "id": "f0b75273-1193-4104-a30d-5b2bd91fc9e1",
-                    "path": "<HID::1949-402>/button5",
+                    "path": "<HID::1949-402>/button4",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -181,6 +181,28 @@
                     "name": "",
                     "id": "f264618a-ef96-4da9-b41a-605b30df63dd",
                     "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InteractAlternate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8864253e-2089-4910-9032-436e0e5dbdcc",
+                    "path": "<HID::1949-402>/button5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InteractAlternate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1827dcc6-8242-4deb-b7ab-631e853e62c1",
+                    "path": "",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
